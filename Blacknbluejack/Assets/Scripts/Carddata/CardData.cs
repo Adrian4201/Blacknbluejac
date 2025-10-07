@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardData : MonoBehaviour
+[System.Serializable]
+public class CardData 
 {
     public string suit;   // e.g. "Hearts", "Spades"
 
