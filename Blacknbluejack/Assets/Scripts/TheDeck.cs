@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class TheDeck : MonoBehaviour
 {
-
     List<int> cards;
-
     public IEnumerable<int> GetCards()
     {
         foreach (int i in cards)
@@ -14,7 +12,6 @@ public class TheDeck : MonoBehaviour
             yield return i;
         }
     }
-
     public void Shuffle()
     {
         if (cards == null)
@@ -25,12 +22,10 @@ public class TheDeck : MonoBehaviour
         {
             cards.Clear();
         }
-
         for (int i = 0; i < 52; i++)
         {
             cards.Add(i);
         }
-
         int n = cards.Count;
         while (n > 1)
         {
@@ -40,9 +35,7 @@ public class TheDeck : MonoBehaviour
             cards[k] = cards[n];
             cards[n] = temp;
         }
-
     }
-
         void Start()
         {
             Shuffle();
