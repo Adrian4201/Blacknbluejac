@@ -43,5 +43,17 @@ public class Cardanimation : MonoBehaviour
             }
             yield return new WaitForFixedUpdate();
         }
+
+        if(CardIndex == -1)
+        {
+            cardmodel.ToggleFace(false);
+
+        }
+        else
+        {
+            cardmodel.index = CardIndex;
+            cardmodel.ToggleFace(true);
+        }
     }
+
 }
