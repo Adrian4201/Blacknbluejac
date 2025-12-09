@@ -12,8 +12,8 @@ public class Deck : MonoBehaviour
 
     void Start()
     {
-        CreateDeck();
         Shuffle();
+        CreateDeck();
     }
 
     public void CreateDeck()

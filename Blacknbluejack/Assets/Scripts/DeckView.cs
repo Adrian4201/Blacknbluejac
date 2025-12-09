@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(TheDeck))]
+[RequireComponent(typeof(CardStack))]
 public class DeckView : MonoBehaviour
 {
-    TheDeck Deck;
+    CardStack Deck;
 
     public Vector3 start;
     public float cardOFFset;
@@ -13,27 +13,35 @@ public class DeckView : MonoBehaviour
 
     void Start()
     {
-        Deck = GetComponent<TheDeck>();
+        Deck = GetComponent<CardStack>();
         ShowCards();
     }
     
     void ShowCards()
     {
         int cardCount = 0;
-
-        foreach(int i in Deck.GetCards())
+        if (Deck.HasCards)
         {
-            float co = cardOFFset * cardCount;
+            foreach (int i in Deck.GetCards())
+            {
+                float co = cardOFFset * cardCount;
 
-            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
-            Vector3 temp = start + new Vector3(co, 0f);
-            cardCopy.transform.position = start;
+                GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+                Vector3 temp = start + new Vector3(co, 0f);
+                cardCopy.transform.position = start;
 
-            Cardmodel cardModel = cardCopy.GetComponent<Cardmodel>();
-            cardModel.index = i;
-            cardModel.ToggleFace(true);
+                Cardmodel cardModel = cardCopy.GetComponent<Cardmodel>();
+                cardModel.index = i;
+                cardModel.ToggleFace(true);
 
-            cardCount++;
+                SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
+                spriteRenderer.sortingOrder =   cardCount;
+                cardCount++;
+            }
         }
+    }
+    void AddCard(Vector3 postion, int Cadindex)
+    {
+
     }
 }
