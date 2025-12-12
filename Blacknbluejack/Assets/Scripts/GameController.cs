@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour
         if(Dealer.CardCount >= 2)
         {
             CardStackView view = Dealer.GetComponent<CardStackView>();
-            view.Toggle(card, true);
+            view.Toggle(DealersFirstCard, true);
         }
     }
     public IEnumerator DealersTurn()

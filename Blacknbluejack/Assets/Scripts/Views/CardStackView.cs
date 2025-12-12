@@ -20,7 +20,6 @@ public class CardStackView : MonoBehaviour
         FetchedCard[card].isFaceup = isFaceup;
 
     }
-
     void Awake()
     {
         FetchedCard = new Dictionary<int, Cardview>();
