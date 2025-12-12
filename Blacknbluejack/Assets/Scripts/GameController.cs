@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     }
     public void Stand()
     {
+        
         hitButton.interactable = false;
         StandButton.interactable= false;
      
@@ -44,7 +45,6 @@ public class GameController : MonoBehaviour
     {
         WinningText.gameObject.SetActive(false);
         LosesText.gameObject.SetActive(false);
-
         StartGame();
     }
     void StartGame()
