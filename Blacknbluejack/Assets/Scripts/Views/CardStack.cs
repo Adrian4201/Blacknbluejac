@@ -7,17 +7,13 @@ public class CardStack : MonoBehaviour
 {
     List<int> cards;
     public bool isGammeDeck;
-    private void Awake()
-    {
-        cards = new List<int>();
-        CreateDeck();
-    }
     public bool HasCards
     {
        
         get{ return cards != null && cards.Count > 0; }
     }
-    public event CardRemover cardRemover;
+    public event CardEventHandeler cardRemover;
+    public event CardEventHandeler CardAdded;
     public int CardCount
     {
         get 
@@ -46,7 +42,7 @@ public class CardStack : MonoBehaviour
 
         if (cardRemover != null) 
         {
-            cardRemover(this, new cardRemovedEventargs(temp));
+            cardRemover(this, new cardEventargs(temp));
         
         }
 
@@ -57,6 +53,51 @@ public class CardStack : MonoBehaviour
     public void  Push(int card)
     {
         cards.Add(card);
+        if (CardAdded != null) 
+        {
+            CardAdded(this, new cardEventargs(card));
+        }
+    }
+    public int HandValue()
+    {
+        int total = 0;
+        int aces = 0;
+
+        foreach (int card in GetCards()) 
+        {
+
+            int cardRak = card % 13;
+
+            if (cardRak <= 8) 
+            {
+                cardRak += 2;
+                total = total + cardRak;
+            }
+            else if(cardRak > 8  && cardRak < 12)
+            {
+                cardRak = 10;
+                total = total + cardRak;
+            }
+            else
+            {
+                aces++;
+            }
+        }
+
+        for (int i = 0; i <aces;i++)
+        {
+            if(total + 11 <= 21)
+            {
+                total = total + 11;
+            }
+            else
+            {
+                total = total + 21;
+            }
+        }
+
+
+        return total;
     }
     public void CreateDeck()
     {
@@ -75,10 +116,14 @@ public class CardStack : MonoBehaviour
             cards[n] = temp;
         }
     }
-    public void Start()
+    private void Awake()
     {
         cards = new List<int>();
-        CreateDeck();
+        if (isGammeDeck)
+        {
+            CreateDeck();
 
+        }
     }
+    
 }

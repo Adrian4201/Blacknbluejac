@@ -4,26 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Cardview : MonoBehaviour
+public class Cardview 
 {
-    [SerializeField] private Image cardImage;
+    public GameObject Card {  get; private set; }
+    public bool isFaceup { get; set; }
 
-    [SerializeField] private TMP_Text cardNumber;
-
-    [SerializeField] private TMP_Text cardNumberTopr;
-
-    [SerializeField] private TMP_Text cardNumberbttmL;
-
-    [SerializeField] private TMP_Text cardNumberbttmR;
-    public void SetCard(CardData data)
+    public Cardview(GameObject card)
     {
-        if (data.Image != null)
-
-            cardImage.sprite = data.Image;
-
-        cardNumber.text = data.rank;
-        cardNumberTopr.text = data.rank;
-        cardNumberbttmL.text = data.rank;
-        cardNumberbttmR.text = data.rank;
+        Card = card;
+        isFaceup = false;
     }
+
+    
 }

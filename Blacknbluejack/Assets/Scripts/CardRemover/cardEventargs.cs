@@ -1,10 +1,10 @@
 ﻿using System;
 
-public class cardRemovedEventargs: EventArgs
+public class cardEventargs : EventArgs
 {
     public int cardIndex { get; private set; }
 
-    public cardRemovedEventargs(int CardIndex)
+    public cardEventargs(int CardIndex)
     {
         CardIndex = cardIndex;
     }

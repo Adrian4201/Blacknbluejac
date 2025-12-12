@@ -6,7 +6,7 @@ using UnityEngine;
 public class CardStackView : MonoBehaviour
 {
     CardStack Deck;
-    Dictionary<int, GameObject> FetchedCard;
+    Dictionary<int, Cardview> FetchedCard;
     int lastCount;
 
     public Vector3 start;
@@ -15,21 +15,35 @@ public class CardStackView : MonoBehaviour
     public bool ReverselayerOrder = false;
     public GameObject cardPrefab;
 
-    void Start()
+    public void Toggle(int card, bool isFaceup)
     {
-        FetchedCard = new Dictionary<int, GameObject>();
+        FetchedCard[card].isFaceup = isFaceup;
+
+    }
+    void Awake()
+    {
+        FetchedCard = new Dictionary<int, Cardview>();
         Deck = GetComponent<CardStack>();
         ShowCards();
         lastCount = Deck.CardCount;
 
         Deck.cardRemover += Deck_cardRemover;
+        Deck.CardAdded += Deck_CardAdded;
     }
 
-    private void Deck_cardRemover(object sender, cardRemovedEventargs e)
+    private void Deck_CardAdded(object sender, cardEventargs e)
+    {
+        
+        float co = cardOFFset * Deck.CardCount;
+        Vector3 temp = start + new Vector3(co, 0f);
+        AddCard(temp, e.cardIndex, Deck.CardCount);
+    }
+
+    private void Deck_cardRemover(object sender, cardEventargs e)
     {
         if (FetchedCard.ContainsKey(e.cardIndex)) 
         {
-            Destroy(FetchedCard[e.cardIndex]);
+            Destroy(FetchedCard[e.cardIndex].Card);
             FetchedCard.Remove(e.cardIndex);
         }
         
@@ -53,7 +67,6 @@ public class CardStackView : MonoBehaviour
                 float co = cardOFFset * cardCount;
                 Vector3 temp = start + new Vector3(co, 0f);
                 AddCard(temp,i,cardCount);
-       
                 cardCount++;
             }
         }
@@ -62,6 +75,11 @@ public class CardStackView : MonoBehaviour
     {
         if (FetchedCard.ContainsKey(Cardindex))
         {
+            if (!faceup)
+            {
+                Cardmodel model  = FetchedCard[Cardindex].Card.GetComponent<Cardmodel>();
+                model.ToggleFace(FetchedCard[Cardindex].isFaceup);
+            }
             return;
         }
 
@@ -81,10 +99,7 @@ public class CardStackView : MonoBehaviour
         {
             spriteRenderer.sortingOrder = positionindex;
         }
-        spriteRenderer.sortingOrder = positionindex;
-
-
-        FetchedCard.Add(Cardindex, cardCopy);
-
+        FetchedCard.Add(Cardindex, new Cardview(cardCopy));
+        Debug.Log("Hand value = " + Deck.HandValue());
     }
 }

@@ -1,3 +1,3 @@
-public delegate void CardRemover(object sender, cardRemovedEventargs e);
+public delegate void CardEventHandeler(object sender, cardEventargs e);
 
 
