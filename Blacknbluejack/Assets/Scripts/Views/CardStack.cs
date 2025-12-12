@@ -17,6 +17,21 @@ public class CardStack : MonoBehaviour
        
         get{ return cards != null && cards.Count > 0; }
     }
+    public event CardRemover cardRemover;
+    public int CardCount
+    {
+        get 
+        { 
+            if(cards == null)
+            {
+                return 0;
+            }
+            else
+            {  
+                return cards.Count; 
+            }
+        }
+    }
     public IEnumerable<int> GetCards()
     {
         foreach (int i in cards)
@@ -28,6 +43,13 @@ public class CardStack : MonoBehaviour
     {
         int temp = cards[0];
         cards.RemoveAt(0);
+
+        if (cardRemover != null) 
+        {
+            cardRemover(this, new cardRemovedEventargs(temp));
+        
+        }
+
         return temp;
 
     }
