@@ -1,18 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Dealdmage : MonoBehaviour
+public class DealDamage : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public HealthTracker dealerHealth;
+    public HealthTracker playerHealth;
+
+    private int winStreak = 0;
+
+    public void PlayerWins()
     {
-        
+        winStreak++;
+
+        int dmg = (winStreak >= 2) ? 20 : 10;
+
+        dealerHealth.TakeDamage(dmg);
+        Debug.Log("Player dealt " + dmg + " damage!");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DealerWins()
     {
-        
+        winStreak = 0;
+
+        playerHealth.TakeDamage(10);
+        Debug.Log("Dealer dealt 10 damage!");
     }
+
+    public bool DealerDead => dealerHealth.currentHealth <= 0;
+    public bool PlayerDead => playerHealth.currentHealth <= 0;
 }

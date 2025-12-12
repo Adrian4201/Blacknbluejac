@@ -1,18 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class HEalthTracker : MonoBehaviour
+public class HealthTracker : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    // UI health bar – Image must be set to "Filled" → "Radial360"
+    public Image healthFill;
+
     void Start()
     {
-        
+        currentHealth = maxHealth;
+        UpdateBar();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int amount)
     {
-        
+        currentHealth -= amount;
+        if (currentHealth < 0) currentHealth = 0;
+
+        UpdateBar();
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+        UpdateBar();
+    }
+
+    void UpdateBar()
+    {
+        if (healthFill != null)
+        {
+            healthFill.fillAmount = (float)currentHealth / maxHealth;
+        }
     }
 }
