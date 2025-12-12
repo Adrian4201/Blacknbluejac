@@ -92,7 +92,7 @@ public class CardStack : MonoBehaviour
             }
             else
             {
-                total = total + 21;
+                total = total + 1;
             }
         }
 

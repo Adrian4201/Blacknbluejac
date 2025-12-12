@@ -53,7 +53,6 @@ public class GameController : MonoBehaviour
         {
             Player.Push(Deck.Pop());
             HitDealer();
-
         }
     }
     void HitDealer()
@@ -64,6 +63,7 @@ public class GameController : MonoBehaviour
             DealersFirstCard = card;
         }
         Dealer.Push(card);
+
         if(Dealer.CardCount >= 2)
         {
             CardStackView view = Dealer.GetComponent<CardStackView>();
@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
     public IEnumerator DealersTurn()
     {
         DealDamage dm = FindAnyObjectByType<DealDamage>();
-
+        Debug.Log("DM: " + dm);
         CardStackView view = Dealer.GetComponent<CardStackView>();
         view.Toggle(DealersFirstCard, true);
         view.ShowCards();
@@ -85,13 +85,21 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        bool playerWinsRound =
-       Dealer.HandValue() > 21 ||
-       (Player.HandValue() <= 21 && Player.HandValue() > Dealer.HandValue());
+        bool playerWinsRound = false;
+        bool dealerWinsRound = false;
 
-        bool dealerWinsRound =
-            Player.HandValue() > 21 ||
-            (Dealer.HandValue() >= Player.HandValue() && Dealer.HandValue() <= 21);
+        if (Player.HandValue() > 21 || (Dealer.HandValue() >= Player.HandValue() && Dealer.HandValue() <= 21))
+        {
+            dealerWinsRound = true;
+        }
+        else if( Dealer.HandValue() > 21 || (Player.HandValue() <= 21 && Player.HandValue() > Dealer.HandValue()))
+        {
+            playerWinsRound = true;
+        }
+        else
+        {
+            dealerWinsRound = true;
+        }
 
         if (playerWinsRound)
         {
@@ -101,7 +109,6 @@ public class GameController : MonoBehaviour
         {
             dm.DealerWins();
         }
-
         // --- Check actual game over ---
         if (dm.DealerDead)
         {
