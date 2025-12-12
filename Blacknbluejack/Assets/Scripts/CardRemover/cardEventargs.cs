@@ -6,6 +6,6 @@ public class cardEventargs : EventArgs
 
     public cardEventargs(int CardIndex)
     {
-        CardIndex = cardIndex;
+        cardIndex = CardIndex;
     }
 }

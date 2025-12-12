@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 449709061}
   - component: {fileID: 449709060}
   - component: {fileID: 449709059}
+  - component: {fileID: 449709063}
   m_Layer: 5
   m_Name: MainCanvas
   m_TagString: Untagged
@@ -226,6 +227,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &449709063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449709058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc99dd42264a0ca49bccbc16247dd6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &597044234
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,7 +823,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1536644043}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 449709063}
+        m_TargetAssemblyTypeName: Mainmenu, Assembly-CSharp
+        m_MethodName: OnApplicationQuit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1536644043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,7 +1224,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1985053769}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 449709063}
+        m_TargetAssemblyTypeName: Mainmenu, Assembly-CSharp
+        m_MethodName: Onplay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1985053769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1336,5 +1373,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 2123401515}
   - {fileID: 597044238}
-  - {fileID: 970461291}
   - {fileID: 449709062}
+  - {fileID: 970461291}

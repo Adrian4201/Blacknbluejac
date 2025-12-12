@@ -118,7 +118,13 @@ public class CardStack : MonoBehaviour
     }
     public void ClearStack()
     {
-        cards.Clear();
+        if (cards == null) return;
+        for (int i = cards.Count - 1; i >= 0; i--)
+        {
+            int c = cards[i];
+            cards.RemoveAt(i);
+            cardRemover?.Invoke(this, new cardEventargs(c));
+        }
     }
 
     private void Awake()
