@@ -47,14 +47,20 @@ public class GameController : MonoBehaviour
     public void Again()
     {
         PlayagainButton.interactable = false;
-
+       
         Player.GetComponent<CardStackView>().clear();
         Dealer.GetComponent<CardStackView>().clear();
         Deck.GetComponent<CardStackView>().clear();
         Deck.CreateDeck();
+        WinMessage.gameObject.SetActive(false);
+        loseMessage.gameObject.SetActive(false);
 
         hitButton.interactable = true;
         StandButton.interactable = true;
+
+        DealersFirstCard = -1;
+
+        StartGame();
     }
     private void Start()
     {
@@ -63,6 +69,8 @@ public class GameController : MonoBehaviour
         //{
         //    Debug.LogError("DealDamage component not found on this GameObject!");
         //}
+        WinMessage.gameObject.SetActive(false);
+        loseMessage.gameObject.SetActive(false);
         StartGame();
     }
     void StartGame()
@@ -84,7 +92,7 @@ public class GameController : MonoBehaviour
         if(Dealer.CardCount >= 2)
         {
             CardStackView view = Dealer.GetComponent<CardStackView>();
-            view.Toggle(DealersFirstCard, true);
+            view.Toggle(card, true);
         }
     }
     public IEnumerator DealersTurn()
@@ -107,14 +115,17 @@ public class GameController : MonoBehaviour
         if (Player.HandValue() > 21 || (Dealer.HandValue() >= Player.HandValue() && Dealer.HandValue() <= 21))
         {
             loseMessage.text = "Your life Saving are mine";
+            loseMessage.gameObject.SetActive(true);
         }
         else if( Dealer.HandValue() > 21 || (Player.HandValue() <= 21 && Player.HandValue() > Dealer.HandValue()))
         {
             WinMessage.text = "You beat the dealer";
+            WinMessage.gameObject.SetActive(true);
         }
         else
         {
             WinMessage.text = "The hose wins!!";
+            WinMessage.gameObject.SetActive(true);
         }
         yield return new WaitForSeconds (1f);
         PlayagainButton.interactable = true;

@@ -61,11 +61,12 @@ public class CardStackView : MonoBehaviour
 
     private void Update()
     {
-        if(lastCount != Deck.CardCount)
-        {
-            lastCount = Deck.CardCount;
-            ShowCards();
-        }
+        ShowCards();
+        //if(lastCount != Deck.CardCount)
+        //{
+        //    lastCount = Deck.CardCount;
+        //    ShowCards();
+        //}
     }
     public void ShowCards()
     {
