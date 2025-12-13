@@ -19,24 +19,24 @@ public class Pausemenu : MonoBehaviour
         {
             if (Gameispaused)
             {
-                Paused();
+                Resume();
             }
             else
             {
-                Resume();
+                Paused();
             }
         }
     }
     public void Paused()
     {
         PauseMenuUi.SetActive(true);
-        Time.timeScale = 1.0f;
+        Time.timeScale = 0f;
         Gameispaused = true;
     }
     public void Resume()
     {
         PauseMenuUi.SetActive(false);
-        Time.timeScale = 0;
+        Time.timeScale = 1.0f;
         Gameispaused = false;
     }
     public void Quit()

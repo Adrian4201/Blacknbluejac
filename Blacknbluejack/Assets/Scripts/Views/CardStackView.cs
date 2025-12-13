@@ -20,6 +20,16 @@ public class CardStackView : MonoBehaviour
         FetchedCard[card].isFaceup = isFaceup;
 
     }
+    public void clear()
+    {
+        Deck.resets();
+        foreach(Cardview cardview in FetchedCard.Values)
+        {
+            Destroy(cardview.Card);
+           
+        }
+        FetchedCard.Clear();
+    }
     void Awake()
     {
         FetchedCard = new Dictionary<int, Cardview>();

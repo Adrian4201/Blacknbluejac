@@ -13,11 +13,14 @@ public class GameController : MonoBehaviour
 
     public Button hitButton;
     public Button StandButton;
+    public Button PlayagainButton;
+    public Text WinMessage;
+    public Text loseMessage;
 
-    public TMP_Text WinningText;
-    public TMP_Text LosesText;
+    //public TMP_Text WinningText;
+    //public TMP_Text LosesText;
 
-    private DealDamage damage;
+    //public DealDamage damage;
     /*
      * Cards dealt to player
      * First player hits/sticks/bust
@@ -27,7 +30,7 @@ public class GameController : MonoBehaviour
     public void hit()
     {
         Player.Push(Deck.Pop());
-        if(Player.HandValue()> 21)
+        if(Player.HandValue() > 21)
         {
             hitButton.interactable = false;
             StandButton.interactable = false;
@@ -39,19 +42,27 @@ public class GameController : MonoBehaviour
         
         hitButton.interactable = false;
         StandButton.interactable= false;
-     
-
         StartCoroutine(DealersTurn());
+    }
+    public void Again()
+    {
+        PlayagainButton.interactable = false;
+
+        Player.GetComponent<CardStackView>().clear();
+        Dealer.GetComponent<CardStackView>().clear();
+        Deck.GetComponent<CardStackView>().clear();
+        Deck.CreateDeck();
+
+        hitButton.interactable = true;
+        StandButton.interactable = true;
     }
     private void Start()
     {
-        WinningText.gameObject.SetActive(false);
-        LosesText.gameObject.SetActive(false);
-        damage = GetComponent<DealDamage>();
-        if (damage == null)
-        {
-            Debug.LogError("DealDamage component not found on this GameObject!");
-        }
+        ////damage = GetComponent<DealDamage>();
+        //if (damage == null)
+        //{
+        //    Debug.LogError("DealDamage component not found on this GameObject!");
+        //}
         StartGame();
     }
     void StartGame()
@@ -68,23 +79,13 @@ public class GameController : MonoBehaviour
         if ((DealersFirstCard < 0))
         {
             DealersFirstCard = card;
-            Dealer.Push(card);
         }
-        else
+        Dealer.Push(card);
+        if(Dealer.CardCount >= 2)
         {
-            Dealer.Push(card);
-            if (Dealer.CardCount == 2)
-            {
-                // After second card is dealt, make sure first stays face-down
-                CardStackView view = Dealer.GetComponent<CardStackView>();
-                view.Toggle(DealersFirstCard, false);
-            }
+            CardStackView view = Dealer.GetComponent<CardStackView>();
+            view.Toggle(DealersFirstCard, true);
         }
-        //if (Dealer.CardCount >= 2)
-        //{
-        //    CardStackView view = Dealer.GetComponent<CardStackView>();
-        //    view.Toggle(DealersFirstCard, true);
-        //}
     }
     public IEnumerator DealersTurn()
     {
@@ -100,76 +101,77 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        bool playerWinsRound = false;
-        bool dealerWinsRound = false;
+        //bool playerWinsRound = false;
+        //bool dealerWinsRound = false;
 
         if (Player.HandValue() > 21 || (Dealer.HandValue() >= Player.HandValue() && Dealer.HandValue() <= 21))
         {
-            dealerWinsRound = true;
+            loseMessage.text = "Your life Saving are mine";
         }
         else if( Dealer.HandValue() > 21 || (Player.HandValue() <= 21 && Player.HandValue() > Dealer.HandValue()))
         {
-            playerWinsRound = true;
+            WinMessage.text = "You beat the dealer";
         }
         else
         {
-            dealerWinsRound = true;
+            WinMessage.text = "The hose wins!!";
         }
-
-        if (playerWinsRound)
-        {
-            damage.PlayerWins();
-        }
-        else if (dealerWinsRound)
-        {
-            damage.DealerWins();
-        }
-        // --- Check actual game over ---
-        if (damage.DealerDead)
-        {
-            WinningText.gameObject.SetActive(true);   // FULL VICTORY
-            hitButton.interactable = false;
-            StandButton.interactable = false;
-        }
-        else if (damage.PlayerDead)
-        {
-            LosesText.gameObject.SetActive(true);     // FULL LOSS
-            hitButton.interactable = false;
-            StandButton.interactable = false;
-        }
-        else
-        {
-            // Start new round automatically
-            yield return new WaitForSeconds(1f);
-            ResetRound();
-        }
+        yield return new WaitForSeconds (1f);
+        PlayagainButton.interactable = true;
+        //if (playerWinsRound)
+        //{
+        //    damage.PlayerWins();
+        //}
+        //else if (dealerWinsRound)
+        //{
+        //    damage.DealerWins();
+        //}
+        //// --- Check actual game over ---
+        //if (damage.DealerDead)
+        //{
+        //    WinningText.gameObject.SetActive(true);   // FULL VICTORY
+        //    hitButton.interactable = false;
+        //    StandButton.interactable = false;
+        //}
+        //else if (damage.PlayerDead)
+        //{
+        //    LosesText.gameObject.SetActive(true);     // FULL LOSS
+        //    hitButton.interactable = false;
+        //    StandButton.interactable = false;
+        //}
+        //else
+        //{
+        //    // Start new round automatically
+        //    yield return new WaitForSeconds(1f);
+        //    ResetRound();
+        //}
 
     }
     void ResetRound()
     {
-        while (Dealer.HasCards)
-        {
-            int card = Dealer.Pop();
-            Deck.Push(card);
-        }
+           while (Dealer.HasCards)
+    {
+        int card = Dealer.Pop();
+        Deck.Push(card);
+    }
+    
+    while (Player.HasCards)
+    {
+        int card = Player.Pop();
+        Deck.Push(card);
+    }
+    
+    DealersFirstCard = -1;
 
-        while (Player.HasCards)
-        {
-            int card = Player.Pop();
-            Deck.Push(card);
-        }
+    // Clear displayed cards (visual cleanup)
+    Dealer.GetComponent<CardStackView>().ShowCards();
+    Player.GetComponent<CardStackView>().ShowCards();
 
-        DealersFirstCard = -1;
+    // Re-enable buttons
+    hitButton.interactable = true;
+    StandButton.interactable = true;
 
-        // Clear displayed cards (visual cleanup)
-        Dealer.GetComponent<CardStackView>().ShowCards();
-        Player.GetComponent<CardStackView>().ShowCards();
-
-        // Re-enable buttons
-        hitButton.interactable = true;
-        StandButton.interactable = true;
-
-        // Deal new hands
-        StartGame();
+    // Deal new hands
+    StartGame();
     }
 }
