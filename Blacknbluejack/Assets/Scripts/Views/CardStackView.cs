@@ -80,7 +80,17 @@ public class CardStackView : MonoBehaviour
                 Cardmodel model  = FetchedCard[Cardindex].Card.GetComponent<Cardmodel>();
                 model.ToggleFace(FetchedCard[Cardindex].isFaceup);
             }
+            SpriteRenderer spriteRenderers = FetchedCard[Cardindex].Card.GetComponent<SpriteRenderer>();
+            if (ReverselayerOrder)
+            {
+                spriteRenderers.sortingOrder = 51 - positionindex;
+            }
+            else
+            {
+                spriteRenderers.sortingOrder = positionindex;
+            }
             return;
+            
         }
 
         GameObject cardCopy = (GameObject)Instantiate(cardPrefab);

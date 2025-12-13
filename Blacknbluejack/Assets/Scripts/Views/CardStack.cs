@@ -126,6 +126,22 @@ public class CardStack : MonoBehaviour
             cardRemover?.Invoke(this, new cardEventargs(c));
         }
     }
+    public void ReturnAndShuffle()
+    {
+        if (isGammeDeck && cards.Count < 10) // If deck is running low
+        {
+            // Reshuffle
+            int n = cards.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = Random.Range(0, n + 1);
+                int temp = cards[k];
+                cards[k] = cards[n];
+                cards[n] = temp;
+            }
+        }
+    }
 
     private void Awake()
     {
